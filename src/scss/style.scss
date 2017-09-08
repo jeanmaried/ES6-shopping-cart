@@ -1,0 +1,47 @@
+$background-color: #9bddb8;
+
+#cart{
+	font-size: 1rem;
+    color: white;
+    padding: .5rem;
+    border-radius: 3rem;
+    background-color: #80ce8d;
+}
+
+header{
+	background-color: $background-color;
+}
+
+.itemRows{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+    width: 30rem;
+    list-style: none;
+}
+
+.shop{
+	border-top: .1rem solid #9bddb8;
+}
+
+#listItems{
+	display: flex;
+	flex-direction: row;
+	top: 20rem;
+	background-color: white;
+
+}
+
+#item_input{
+	width: 5rem;
+}
+
+#update{
+	background-color: green;
+	border-radius: 5rem 0 0 5rem;
+}
+
+#remove{
+	background-color: red;
+	border-radius: 0 5rem 5rem 0;
+}
