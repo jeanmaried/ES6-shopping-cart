@@ -81,8 +81,8 @@ var App = function () {
 		this.cat_clicked = "((categoryPath.id=abcat0502000))";
 		this.initBBCall();
 		this.catListeners();
-		var Cartinit = new _productUtil2.default();
-		Cartinit.rebuildCart();
+		// let Cartinit = new productUtil;
+		// Cartinit.rebuildCart(); 
 	}
 
 	_createClass(App, [{
@@ -93,8 +93,6 @@ var App = function () {
 			(0, _bestbuy2.default)({ url: "https://api.bestbuy.com/v1/products" + this.cat_clicked, api: "8ccddf4rtjz5k5btqam84qak" }).then(function (data) {
 				(0, _carousel.carousel)(data);
 				_this.atcListeners();
-
-				/*  carosel with products */
 			}).catch(function (error) {
 				console.log("warning Christopher Robins... Error");
 				console.log(error);
@@ -135,18 +133,6 @@ exports.default = App;
 
 var x = new App();
 
-var popup = document.getElementById("cart");
-var y = document.getElementById('listItems');
-popup.addEventListener('click', function () {
-	if (y.style.display === 'none') {
-		console.log(1);
-		y.style.display = 'block';
-	} else {
-		y.style.display = 'none';
-		console.log(2);
-	}
-});
-
 },{"./bestbuy":1,"./carousel":2,"./productUtil":4}],4:[function(require,module,exports){
 'use strict';
 
@@ -172,90 +158,97 @@ var productUtil = function () {
 			if (sessionStorage.getItem(sku) == undefined) {
 				sessionStorage.setItem(sku, JSON.stringify(product));
 			} else {
-				var oldValue = JSON.parse(sessionStorage.getItem(sku));
+				var oldValue = JSON.parse(sessionStorage.getItem(sku, product));
 				var newValue = oldValue.quantity + 1;
 				product.quantity = newValue;
 				sessionStorage.setItem(sku, JSON.stringify(product));
 			}
 			document.getElementById('listItems').innerHTML = "";
-			this.rebuildCart();
-			this.getcartItems();
-		}
-	}, {
-		key: 'rebuildCart',
-		value: function rebuildCart() {
-			for (var key in sessionStorage) {
-				var sku = key;
-				var product = JSON.parse(sessionStorage[key]);
-				this.cartList(sku, product);
-				this.getcartItems();
-			}
+			this.cartList(sku, product);
 		}
 	}, {
 		key: 'cartList',
 		value: function cartList(sku, product) {
-			var cartItem = $('<div id="itemRows"></div>');
-			cartItem.html('<div>' + 'SKU' + '</div>' + '<div>' + sku + '</div>' + '<div>' + 'QUANTITY' + '</div>' + '<input id="item_input" type="number" value="' + product.quantity + '">' + '<div>' + 'TOTAL' + '</div>' + '<div id="totalPrice">' + product.price * product.quantity + '</div>' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>');
-			$('#listItems').append(cartItem);
-			this.updateCart(sku, product);
-			this.removeCart(sku, product);
+
+			for (var key in sessionStorage) {
+
+				var thisProduct = JSON.stringify(sessionStorage.getItem(sku, product));
+				var cartItem = $('<div id="itemRows"></div>');
+
+				sku = key;
+				product = JSON.parse(sessionStorage[key]);
+
+				cartItem.html('<div>' + 'SKU' + '</div>' + '<div>' + sku + '</div>' + '<div>' + 'QUANTITY' + '</div>' + '<input class="item_input" type="number" value="' + product.quantity + '">' + '<div>' + 'TOTAL' + '</div>' + '<div id="totalPrice">' + product.price * product.quantity + '</div>' + '<button class="update" type="button" data-sku="' + sku + '" data-product="' + thisProduct + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>');
+				$('#listItems').append(cartItem);
+			}
+			this.updateCart();
+			// this.removeCart(sku, product);		
 		}
+
+		//    getCartInput(thisSku, thisProduct){
+		//    	thisProduct = JSON.parse(thisProduct);
+		//    	console.log(thisProduct);
+		//    	let update_value = document.getElementsByClassName('item_input');
+		//    	for (var i = 0; i < update_value.length; i++){
+		//    		if (update_value[i].value == thisProduct.quantity){
+		//    			console.log("same value");
+		//    		}
+		//    		else{
+		//    			console.log("not the same");
+		//    			let oldValue=JSON.parse(sessionStorage.getItem(thisSku)); 
+		// 			let totalValue = (update_value[i].value - oldValue.quantity)+oldValue.quantity;
+		// 			thisProduct.quantity = totalValue;
+		// 			sessionStorage.setItem(thisSku,JSON.stringify(thisProduct));
+		// 			this.totalPrice(thisProduct);
+		//    		}
+		//    	};
+		//    }
+
 	}, {
 		key: 'updateCart',
-		value: function updateCart(sku, product) {
-			var _this = this;
-
-			var update_value = document.getElementById('item_input');
+		value: function updateCart() {
 			var update = document.getElementsByClassName('update');
-			update.addEventListener('click', function () {
-				if (update_value.value == product.quantity) {} else {
-					var oldValue = JSON.parse(sessionStorage.getItem(sku));
-					var totalValue = update_value.value - oldValue.quantity + oldValue.quantity;
-					product.quantity = totalValue;
-					sessionStorage.setItem(sku, JSON.stringify(product));
-					_this.totalPrice(sku, product);
-				}
-			});
-		}
-	}, {
-		key: 'removeCart',
-		value: function removeCart(sku, product) {
-			var remove = document.getElementsByClassName('remove');
+			for (var i = 0; i < update.length; i++) {
+				update[i].addEventListener('click', function (e) {
+					console.log(update);
 
-			var _loop = function _loop() {
-				console.log(remove[i]);
-				var thisSku = remove[i].getAttribute("data-sku");
-				remove[i].addEventListener('click', function () {
-					sessionStorage.removeItem(thisSku);
-					//   		document.getElementsByClassName('itemRows')[i].innerHTML="";
-					//   		this.getcartItems(sku, product);
+					// thisSku = update[i].getAttribute("data-sku");
+					// 	thisProduct = update[i].getAttribute(JSON.parse(thisProduct));
+					// this.getCartInput(thisSku, thisProduct);
 				});
-			};
+			}
+		}
 
-			for (var i = 0; i < remove.length; i++) {
-				_loop();
-			}
-		}
-	}, {
-		key: 'totalPrice',
-		value: function totalPrice(sku, product) {
-			var totalPrice = product.price * product.quantity;
-			document.getElementById('totalPrice').innerHTML = totalPrice;
-			this.getcartItems();
-		}
-	}, {
-		key: 'getcartItems',
-		value: function getcartItems() {
-			var totalPrice = 0;
-			var totalQny = 0;
-			for (var key in sessionStorage) {
-				var x = JSON.parse(sessionStorage[key]);
-				totalQny = totalQny + x.quantity;
-				document.getElementById('cartnum').innerHTML = totalQny;
-				totalPrice += x.price * x.quantity;
-				document.getElementById('price').innerHTML = totalPrice;
-			}
-		}
+		//    removeCart(sku, product){
+		//    	let remove = document.getElementsByClassName('remove')
+		// 	for (var i = 0; i < remove.length; i++){
+		//    	let thisSku = remove[i].getAttribute("data-sku");
+		//    	remove[i].addEventListener('click', ()=>{
+		//    		sessionStorage.removeItem(thisSku);
+		//  //   		document.getElementsByClassName('itemRows')[i].innerHTML="";
+		//  //   		this.getcartItems(sku, product);
+		//    	})
+		//    	}
+		//    }
+
+		//    totalPrice(thisProduct){
+		//    	let totalPrice = thisProduct.price*thisProduct.quantity;
+		//    	document.getElementById('totalPrice').innerHTML= totalPrice;
+		//    	this.getcartItems();
+		//    }
+
+		// getcartItems(){
+		// 	let totalPrice = 0;
+		// 	let totalQny = 0;
+		// 	for (let key in sessionStorage) {
+		// 		let x = JSON.parse(sessionStorage[key]);
+		// 		totalQny = totalQny + x.quantity;
+		// 		document.getElementById('cartnum').innerHTML= totalQny;
+		// 		totalPrice += x.price * x.quantity;
+		// 		document.getElementById('price').innerHTML= totalPrice;
+		// 		}
+		// };
+
 	}]);
 
 	return productUtil;

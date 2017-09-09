@@ -7,8 +7,8 @@ export default class App{
 		this.cat_clicked = "((categoryPath.id=abcat0502000))";
 		this.initBBCall();
 		this.catListeners();
-		let Cartinit = new productUtil;
-		Cartinit.rebuildCart(); 
+		// let Cartinit = new productUtil;
+		// Cartinit.rebuildCart(); 
 	}
 
 	
@@ -17,10 +17,6 @@ export default class App{
 		.then(data => {
 			carousel(data);
 			this.atcListeners();
-
-	
-			/*  carosel with products */
-
 		})
 		.catch(error => {
 			console.log("warning Christopher Robins... Error");
@@ -56,19 +52,6 @@ export default class App{
 };
 
 let x = new App;
-
-let popup = document.getElementById("cart");
-let y = document.getElementById('listItems');
-popup.addEventListener('click', function() {
-    if (y.style.display === 'none') {
-    	console.log(1);
-        y.style.display = 'block';
-    }
-    else {
-        y.style.display = 'none';
-        console.log(2);
-    }
-});
 
 
 
