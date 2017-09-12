@@ -57,9 +57,7 @@ export default class productUtil{
     		}
     		else{
     			console.log("not the same");
-    			oldQuantity = update_value[i].value;
-    			console.log(newQuantity);
-				sessionStorage.setItem(thisSku,JSON.stringify(goGrabInput.price, oldQuantity));
+
  //    			let oldValue=JSON.parse(sessionStorage.getItem(thisSku)); 
 	// 			let totalValue = (update_value[i].value - oldValue.quantity)+oldValue.quantity;
 	// 			thisProduct.quantity = totalValue;
