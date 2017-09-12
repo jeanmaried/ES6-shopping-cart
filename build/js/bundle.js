@@ -172,52 +172,55 @@ var productUtil = function () {
 
 			for (var key in sessionStorage) {
 
-				var thisProduct = JSON.stringify(sessionStorage.getItem(sku, product));
 				var cartItem = $('<div id="itemRows"></div>');
 
 				sku = key;
 				product = JSON.parse(sessionStorage[key]);
 
-				cartItem.html('<div>' + 'SKU' + '</div>' + '<div>' + sku + '</div>' + '<div>' + 'QUANTITY' + '</div>' + '<input class="item_input" type="number" value="' + product.quantity + '">' + '<div>' + 'TOTAL' + '</div>' + '<div id="totalPrice">' + product.price * product.quantity + '</div>' + '<button class="update" type="button" data-sku="' + sku + '" data-product="' + thisProduct + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>');
+				cartItem.html('<div>' + 'SKU' + '</div>' + '<div>' + sku + '</div>' + '<div>' + 'QUANTITY' + '</div>' + '<input class="item_input" type="number" value="' + product.quantity + '">' + '<div>' + 'TOTAL' + '</div>' + '<div id="totalPrice">' + product.price * product.quantity + '</div>' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>');
 				$('#listItems').append(cartItem);
 			}
 			this.updateCart();
 			// this.removeCart(sku, product);		
 		}
-
-		//    getCartInput(thisSku, thisProduct){
-		//    	thisProduct = JSON.parse(thisProduct);
-		//    	console.log(thisProduct);
-		//    	let update_value = document.getElementsByClassName('item_input');
-		//    	for (var i = 0; i < update_value.length; i++){
-		//    		if (update_value[i].value == thisProduct.quantity){
-		//    			console.log("same value");
-		//    		}
-		//    		else{
-		//    			console.log("not the same");
-		//    			let oldValue=JSON.parse(sessionStorage.getItem(thisSku)); 
-		// 			let totalValue = (update_value[i].value - oldValue.quantity)+oldValue.quantity;
-		// 			thisProduct.quantity = totalValue;
-		// 			sessionStorage.setItem(thisSku,JSON.stringify(thisProduct));
-		// 			this.totalPrice(thisProduct);
-		//    		}
-		//    	};
-		//    }
+	}, {
+		key: 'getCartInput',
+		value: function getCartInput(goGrabInput) {
+			var thisSku = goGrabInput.getAttribute("data-sku");
+			var oldQuantity = JSON.parse(sessionStorage.getItem(thisSku)).quantity;
+			var update_value = document.getElementsByClassName('item_input');
+			for (var i = 0; i < update_value.length; i++) {
+				if (update_value[i].value == oldQuantity) {
+					console.log(oldQuantity);
+				} else {
+					console.log("not the same");
+					oldQuantity = update_value[i].value;
+					console.log(newQuantity);
+					sessionStorage.setItem(thisSku, JSON.stringify(goGrabInput.price, oldQuantity));
+					//    			let oldValue=JSON.parse(sessionStorage.getItem(thisSku)); 
+					// 			let totalValue = (update_value[i].value - oldValue.quantity)+oldValue.quantity;
+					// 			thisProduct.quantity = totalValue;
+					// 			sessionStorage.setItem(thisSku,JSON.stringify(thisProduct));
+					// 			this.totalPrice(thisProduct);
+				}
+			};
+		} //here we look into the input to see if the value has changed. If no, do nothing. If yes, update
+		//session storage.
 
 	}, {
 		key: 'updateCart',
 		value: function updateCart() {
+			var _this = this;
+
 			var update = document.getElementsByClassName('update');
 			for (var i = 0; i < update.length; i++) {
 				update[i].addEventListener('click', function (e) {
-					console.log(update);
-
-					// thisSku = update[i].getAttribute("data-sku");
-					// 	thisProduct = update[i].getAttribute(JSON.parse(thisProduct));
-					// this.getCartInput(thisSku, thisProduct);
+					var goGrabInput = e.target;
+					_this.getCartInput(goGrabInput);
 				});
 			}
-		}
+		} // this section allows you to see what update button has been pressed and passes the values on to
+		// getCartInput
 
 		//    removeCart(sku, product){
 		//    	let remove = document.getElementsByClassName('remove')
