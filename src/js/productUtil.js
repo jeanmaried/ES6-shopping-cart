@@ -49,20 +49,15 @@ export default class productUtil{
 
     getCartInput(goGrabInput){
     	let thisSku = goGrabInput.getAttribute("data-sku");
-    	let oldQuantity = JSON.parse(sessionStorage.getItem(thisSku)).quantity;
+    	let oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
     	let update_value = document.getElementsByClassName('item_input');
     	for (var i = 0; i < update_value.length; i++){
-    		if (update_value[i].value == oldQuantity){
-    			console.log(oldQuantity);
+    		if (update_value[i].value == oldQuantity.quantity){
+    			console.log(oldQuantity.quantity);
     		}
     		else{
-    			console.log("not the same");
-
- //    			let oldValue=JSON.parse(sessionStorage.getItem(thisSku)); 
-	// 			let totalValue = (update_value[i].value - oldValue.quantity)+oldValue.quantity;
-	// 			thisProduct.quantity = totalValue;
-	// 			sessionStorage.setItem(thisSku,JSON.stringify(thisProduct));
-	// 			this.totalPrice(thisProduct);
+    			oldQuantity.quantity = update_value[i].value;
+    			sessionStorage.setItem(thisSku,JSON.stringify(oldQuantity));
     		}
     	};
     } //here we look into the input to see if the value has changed. If no, do nothing. If yes, update
@@ -73,7 +68,7 @@ export default class productUtil{
     	for (var i = 0; i < update.length; i++){
     		update[i].addEventListener('click', (e) => {
     			let goGrabInput = e.target;
-    			this.getCartInput(goGrabInput)
+    			this.getCartInput(goGrabInput);
     		})
     	}
     } // this section allows you to see what update button has been pressed and passes the values on to
