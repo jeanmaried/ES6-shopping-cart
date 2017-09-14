@@ -35,7 +35,7 @@ export default class productUtil{
 				'<div>'+'SKU'+'</div>'+
 				'<div>'+sku+'</div>'+
 				'<div>'+'QUANTITY'+'</div>'+
-				'<input class="item_input" type="number" value="'+product.quantity+'">'+
+				'<input id="'+sku+'" type="number" value="'+product.quantity+'">'+
 				'<div>'+'TOTAL'+'</div>'+
 				'<div id="totalPrice">'+product.price*product.quantity+'</div>'+
 				'<button class="update" type="button" data-sku="'+sku+'">'+'UPDATE'+'</button>'+
@@ -48,28 +48,28 @@ export default class productUtil{
 	}
 
     getCartInput(goGrabInput){
+    	console.log('gograb:', goGrabInput);
     	let thisSku = goGrabInput.getAttribute("data-sku");
     	let oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
-    	let update_value = document.getElementsByClassName('item_input');
-    	for (var i = 0; i < update_value.length; i++){
-    		if (update_value[i].value == oldQuantity.quantity){
-    			console.log(oldQuantity.quantity);
+    	let update_value = document.getElementById(thisSku);
+    		if (update_value.value == oldQuantity.quantity){
+    			console.log(update_value.value);
     		}
     		else{
-    			oldQuantity.quantity = update_value[i].value;
+    			console.log(update_value.value);
+    			oldQuantity.quantity = update_value.value;
     			sessionStorage.setItem(thisSku,JSON.stringify(oldQuantity));
     		}
-    	};
     } //here we look into the input to see if the value has changed. If no, do nothing. If yes, update
       //session storage.
 
     updateCart(){
     	let update = document.getElementsByClassName('update');
-    	for (var i = 0; i < update.length; i++){
+    	for (let i = 0; i < update.length; i++){
     		update[i].addEventListener('click', (e) => {
     			let goGrabInput = e.target;
     			this.getCartInput(goGrabInput);
-    		})
+    		})// when i click too fast it adds 2 instead of one. Also, it seems to be getting input from another div and not the one it is in
     	}
     } // this section allows you to see what update button has been pressed and passes the values on to
       // getCartInput

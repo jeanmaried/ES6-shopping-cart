@@ -177,7 +177,7 @@ var productUtil = function () {
 				sku = key;
 				product = JSON.parse(sessionStorage[key]);
 
-				cartItem.html('<div>' + 'SKU' + '</div>' + '<div>' + sku + '</div>' + '<div>' + 'QUANTITY' + '</div>' + '<input class="item_input" type="number" value="' + product.quantity + '">' + '<div>' + 'TOTAL' + '</div>' + '<div id="totalPrice">' + product.price * product.quantity + '</div>' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>');
+				cartItem.html('<div>' + 'SKU' + '</div>' + '<div>' + sku + '</div>' + '<div>' + 'QUANTITY' + '</div>' + '<input id="' + sku + '" type="number" value="' + product.quantity + '">' + '<div>' + 'TOTAL' + '</div>' + '<div id="totalPrice">' + product.price * product.quantity + '</div>' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>');
 				$('#listItems').append(cartItem);
 			}
 			this.updateCart();
@@ -186,17 +186,17 @@ var productUtil = function () {
 	}, {
 		key: 'getCartInput',
 		value: function getCartInput(goGrabInput) {
+			console.log('gograb:', goGrabInput);
 			var thisSku = goGrabInput.getAttribute("data-sku");
 			var oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
-			var update_value = document.getElementsByClassName('item_input');
-			for (var i = 0; i < update_value.length; i++) {
-				if (update_value[i].value == oldQuantity.quantity) {
-					console.log(oldQuantity.quantity);
-				} else {
-					oldQuantity.quantity = update_value[i].value;
-					sessionStorage.setItem(thisSku, JSON.stringify(oldQuantity));
-				}
-			};
+			var update_value = document.getElementById(thisSku);
+			if (update_value.value == oldQuantity.quantity) {
+				console.log(update_value.value);
+			} else {
+				console.log(update_value.value);
+				oldQuantity.quantity = update_value.value;
+				sessionStorage.setItem(thisSku, JSON.stringify(oldQuantity));
+			}
 		} //here we look into the input to see if the value has changed. If no, do nothing. If yes, update
 		//session storage.
 
@@ -210,7 +210,7 @@ var productUtil = function () {
 				update[i].addEventListener('click', function (e) {
 					var goGrabInput = e.target;
 					_this.getCartInput(goGrabInput);
-				});
+				}); // when i click too fast it adds 2 instead of one. Also, it seems to be getting input from another div and not the one it is in
 			}
 		} // this section allows you to see what update button has been pressed and passes the values on to
 		// getCartInput
