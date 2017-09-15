@@ -7,8 +7,8 @@ export default class App{
 		this.cat_clicked = "((categoryPath.id=abcat0502000))";
 		this.initBBCall();
 		this.catListeners();
-		// let Cartinit = new productUtil;
-		// Cartinit.rebuildCart(); 
+		let Cartinit = new productUtil;
+		Cartinit.cartBuilder(); 
 	}
 
 	

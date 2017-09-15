@@ -81,8 +81,8 @@ var App = function () {
 		this.cat_clicked = "((categoryPath.id=abcat0502000))";
 		this.initBBCall();
 		this.catListeners();
-		// let Cartinit = new productUtil;
-		// Cartinit.rebuildCart(); 
+		var Cartinit = new _productUtil2.default();
+		Cartinit.cartBuilder();
 	}
 
 	_createClass(App, [{
@@ -152,9 +152,7 @@ var productUtil = function () {
 	_createClass(productUtil, [{
 		key: 'addToCart',
 		value: function addToCart(sku, price) {
-
 			var product = { price: price, quantity: 1 };
-
 			if (sessionStorage.getItem(sku) == undefined) {
 				sessionStorage.setItem(sku, JSON.stringify(product));
 			} else {
@@ -163,17 +161,14 @@ var productUtil = function () {
 				product.quantity = newValue;
 				sessionStorage.setItem(sku, JSON.stringify(product));
 			}
-			document.getElementById('listItems').innerHTML = "";
 			this.cartList(sku, product);
 		}
 	}, {
-		key: 'cartList',
-		value: function cartList(sku, product) {
-
+		key: 'cartBuilder',
+		value: function cartBuilder(sku, product) {
+			document.getElementById('listItems').innerHTML = "";
 			for (var key in sessionStorage) {
-
 				var cartItem = $('<div id="itemRows"></div>');
-
 				sku = key;
 				product = JSON.parse(sessionStorage[key]);
 
@@ -181,8 +176,23 @@ var productUtil = function () {
 				$('#listItems').append(cartItem);
 			}
 			this.updateCart();
-			// this.removeCart(sku, product);		
+			this.removeCart();
 		}
+	}, {
+		key: 'updateCart',
+		value: function updateCart() {
+			var _this = this;
+
+			var update = document.getElementsByClassName('update');
+			for (var i = 0; i < update.length; i++) {
+				update[i].addEventListener('click', function (e) {
+					var goGrabInput = e.target;
+					_this.getCartInput(goGrabInput);
+				});
+			}
+		} // this section allows you to see what update button has been pressed and passes the values on to
+		// getCartInput
+
 	}, {
 		key: 'getCartInput',
 		value: function getCartInput(goGrabInput) {
@@ -197,35 +207,29 @@ var productUtil = function () {
 				oldQuantity.quantity = update_value.value;
 				sessionStorage.setItem(thisSku, JSON.stringify(oldQuantity));
 			}
-		} //here we look into the input to see if the value has changed. If no, do nothing. If yes, update
+		} //this method looks into the input to see if the value has changed. If no, do nothing. If yes, update
 		//session storage.
 
 	}, {
-		key: 'updateCart',
-		value: function updateCart() {
-			var _this = this;
+		key: 'removeCart',
+		value: function removeCart() {
+			var _this2 = this;
 
-			var update = document.getElementsByClassName('update');
-			for (var i = 0; i < update.length; i++) {
-				update[i].addEventListener('click', function (e) {
-					var goGrabInput = e.target;
-					_this.getCartInput(goGrabInput);
-				}); // when i click too fast it adds 2 instead of one. Also, it seems to be getting input from another div and not the one it is in
+			var remove = document.getElementsByClassName('remove');
+
+			var _loop = function _loop() {
+				var thisSku = remove[i].getAttribute("data-sku");
+				remove[i].addEventListener('click', function () {
+					sessionStorage.removeItem(thisSku);
+					_this2.getcartItems();
+					_this2.cartBuilder();
+				});
+			};
+
+			for (var i = 0; i < remove.length; i++) {
+				_loop();
 			}
-		} // this section allows you to see what update button has been pressed and passes the values on to
-		// getCartInput
-
-		//    removeCart(sku, product){
-		//    	let remove = document.getElementsByClassName('remove')
-		// 	for (var i = 0; i < remove.length; i++){
-		//    	let thisSku = remove[i].getAttribute("data-sku");
-		//    	remove[i].addEventListener('click', ()=>{
-		//    		sessionStorage.removeItem(thisSku);
-		//  //   		document.getElementsByClassName('itemRows')[i].innerHTML="";
-		//  //   		this.getcartItems(sku, product);
-		//    	})
-		//    	}
-		//    }
+		} // this method removes the cart item from session storage and fires the cart builder ()
 
 		//    totalPrice(thisProduct){
 		//    	let totalPrice = thisProduct.price*thisProduct.quantity;
