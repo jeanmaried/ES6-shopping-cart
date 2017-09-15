@@ -1,6 +1,6 @@
 export default class productUtil{
 	constructor (){
-	};
+	}
 	
 	addToCart (sku, price){
 		let product={price, quantity:1};
@@ -13,8 +13,9 @@ export default class productUtil{
 			product.quantity = newValue;
 			sessionStorage.setItem(sku,JSON.stringify(product));
 		}
-		this.cartList(sku, product);
-	};
+		this.getcartItems();
+		this.cartBuilder(sku, product);
+	}
 
 
 	cartBuilder(sku, product){
@@ -29,17 +30,19 @@ export default class productUtil{
 				'<div>'+sku+'</div>'+
 				'<div>'+'QUANTITY'+'</div>'+
 				'<input id="'+sku+'" type="number" value="'+product.quantity+'">'+
+				'<div>'+'UNIT PRICE'+'</div>'+
+				'<div>'+product.price+'</div>'+
 				'<div>'+'TOTAL'+'</div>'+
-				'<div id="totalPrice">'+product.price*product.quantity+'</div>'+
+				'<div>'+product.price*product.quantity+'</div>'+
 				'<button class="update" type="button" data-sku="'+sku+'">'+'UPDATE'+'</button>'+
 				'<button class="remove" type="button" data-sku="'+sku+'">'+'REMOVE'+'</button>');
 			$('#listItems').append(cartItem);
 		}
-		this.updateCart();
-		this.removeCart();		
+		this.updateButton();
+		this.removeButton();		
 	}
 
-    updateCart(){
+    updateButton(){
     	let update = document.getElementsByClassName('update');
     	for (let i = 0; i < update.length; i++){
     		update[i].addEventListener('click', (e) => {
@@ -51,53 +54,48 @@ export default class productUtil{
       // getCartInput
 
     getCartInput(goGrabInput){
-    	console.log('gograb:', goGrabInput);
     	let thisSku = goGrabInput.getAttribute("data-sku");
     	let oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
     	let update_value = document.getElementById(thisSku);
     		if (update_value.value == oldQuantity.quantity){
-    			console.log(update_value.value);
     		}
     		else{
-    			console.log(update_value.value);
     			oldQuantity.quantity = update_value.value;
     			sessionStorage.setItem(thisSku,JSON.stringify(oldQuantity));
     		}
+    		this.getcartItems();
+    		this.cartBuilder();
     } //this method looks into the input to see if the value has changed. If no, do nothing. If yes, update
       //session storage.
 
-    removeCart(){
+    removeButton(){
     	let remove = document.getElementsByClassName('remove')
 		for (var i = 0; i < remove.length; i++){
-	   	let thisSku = remove[i].getAttribute("data-sku");
-    	remove[i].addEventListener('click', ()=>{
-    		sessionStorage.removeItem(thisSku);
-    		this.getcartItems();
-  			this.cartBuilder();
-    	})
+		   	let thisSku = remove[i].getAttribute("data-sku");
+	    	remove[i].addEventListener('click', ()=>{
+	    		sessionStorage.removeItem(thisSku);
+	    		this.getcartItems();
+	    		this.cartBuilder();
+	    	})
     	}
-    } // this method removes the cart item from session storage and fires the cart builder ()
+    } // this method removes the cart item from session storage and fires the cart builder
+      // which them rebuilds cart to erase said item
 
- //    totalPrice(thisProduct){
- //    	let totalPrice = thisProduct.price*thisProduct.quantity;
- //    	document.getElementById('totalPrice').innerHTML= totalPrice;
- //    	this.getcartItems();
- //    }
-
-	// getcartItems(){
-	// 	let totalPrice = 0;
-	// 	let totalQny = 0;
-	// 	for (let key in sessionStorage) {
-	// 		let x = JSON.parse(sessionStorage[key]);
-	// 		totalQny = totalQny + x.quantity;
-	// 		document.getElementById('cartnum').innerHTML= totalQny;
-	// 		totalPrice += x.price * x.quantity;
-	// 		document.getElementById('price').innerHTML= totalPrice;
-	// 		}
-	// };
+	getcartItems(){
+		let totalPrice = 0;
+		let totalQny = 0;
+		for (let key in sessionStorage) {
+			let x = JSON.parse(sessionStorage[key]);
+			totalQny += x.quantity;
+			totalPrice += x.price * x.quantity;
+			}
+			document.getElementById('price').innerHTML= totalPrice;
+			document.getElementById('cartnum').innerHTML= totalQny;
+	};
 
 };
 
-
+//Need to get the total quantity working as it bugs when removing an item and then writes out the last
+// quantity next to the sum of all the other quantities
 
 	

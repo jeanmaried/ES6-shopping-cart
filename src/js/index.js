@@ -8,7 +8,8 @@ export default class App{
 		this.initBBCall();
 		this.catListeners();
 		let Cartinit = new productUtil;
-		Cartinit.cartBuilder(); 
+		Cartinit.cartBuilder();
+		Cartinit.getcartItems();
 	}
 
 	

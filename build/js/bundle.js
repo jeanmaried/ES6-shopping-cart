@@ -83,6 +83,7 @@ var App = function () {
 		this.catListeners();
 		var Cartinit = new _productUtil2.default();
 		Cartinit.cartBuilder();
+		Cartinit.getcartItems();
 	}
 
 	_createClass(App, [{
@@ -161,7 +162,8 @@ var productUtil = function () {
 				product.quantity = newValue;
 				sessionStorage.setItem(sku, JSON.stringify(product));
 			}
-			this.cartList(sku, product);
+			this.getcartItems();
+			this.cartBuilder(sku, product);
 		}
 	}, {
 		key: 'cartBuilder',
@@ -172,15 +174,15 @@ var productUtil = function () {
 				sku = key;
 				product = JSON.parse(sessionStorage[key]);
 
-				cartItem.html('<div>' + 'SKU' + '</div>' + '<div>' + sku + '</div>' + '<div>' + 'QUANTITY' + '</div>' + '<input id="' + sku + '" type="number" value="' + product.quantity + '">' + '<div>' + 'TOTAL' + '</div>' + '<div id="totalPrice">' + product.price * product.quantity + '</div>' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>');
+				cartItem.html('<div>' + 'SKU' + '</div>' + '<div>' + sku + '</div>' + '<div>' + 'QUANTITY' + '</div>' + '<input id="' + sku + '" type="number" value="' + product.quantity + '">' + '<div>' + 'UNIT PRICE' + '</div>' + '<div>' + product.price + '</div>' + '<div>' + 'TOTAL' + '</div>' + '<div>' + product.price * product.quantity + '</div>' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>');
 				$('#listItems').append(cartItem);
 			}
-			this.updateCart();
-			this.removeCart();
+			this.updateButton();
+			this.removeButton();
 		}
 	}, {
-		key: 'updateCart',
-		value: function updateCart() {
+		key: 'updateButton',
+		value: function updateButton() {
 			var _this = this;
 
 			var update = document.getElementsByClassName('update');
@@ -196,23 +198,21 @@ var productUtil = function () {
 	}, {
 		key: 'getCartInput',
 		value: function getCartInput(goGrabInput) {
-			console.log('gograb:', goGrabInput);
 			var thisSku = goGrabInput.getAttribute("data-sku");
 			var oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
 			var update_value = document.getElementById(thisSku);
-			if (update_value.value == oldQuantity.quantity) {
-				console.log(update_value.value);
-			} else {
-				console.log(update_value.value);
+			if (update_value.value == oldQuantity.quantity) {} else {
 				oldQuantity.quantity = update_value.value;
 				sessionStorage.setItem(thisSku, JSON.stringify(oldQuantity));
 			}
+			this.getcartItems();
+			this.cartBuilder();
 		} //this method looks into the input to see if the value has changed. If no, do nothing. If yes, update
 		//session storage.
 
 	}, {
-		key: 'removeCart',
-		value: function removeCart() {
+		key: 'removeButton',
+		value: function removeButton() {
 			var _this2 = this;
 
 			var remove = document.getElementsByClassName('remove');
@@ -229,26 +229,22 @@ var productUtil = function () {
 			for (var i = 0; i < remove.length; i++) {
 				_loop();
 			}
-		} // this method removes the cart item from session storage and fires the cart builder ()
+		} // this method removes the cart item from session storage and fires the cart builder
+		// which them rebuilds cart to erase said item
 
-		//    totalPrice(thisProduct){
-		//    	let totalPrice = thisProduct.price*thisProduct.quantity;
-		//    	document.getElementById('totalPrice').innerHTML= totalPrice;
-		//    	this.getcartItems();
-		//    }
-
-		// getcartItems(){
-		// 	let totalPrice = 0;
-		// 	let totalQny = 0;
-		// 	for (let key in sessionStorage) {
-		// 		let x = JSON.parse(sessionStorage[key]);
-		// 		totalQny = totalQny + x.quantity;
-		// 		document.getElementById('cartnum').innerHTML= totalQny;
-		// 		totalPrice += x.price * x.quantity;
-		// 		document.getElementById('price').innerHTML= totalPrice;
-		// 		}
-		// };
-
+	}, {
+		key: 'getcartItems',
+		value: function getcartItems() {
+			var totalPrice = 0;
+			var totalQny = 0;
+			for (var key in sessionStorage) {
+				var x = JSON.parse(sessionStorage[key]);
+				totalQny += x.quantity;
+				totalPrice += x.price * x.quantity;
+			}
+			document.getElementById('price').innerHTML = totalPrice;
+			document.getElementById('cartnum').innerHTML = totalQny;
+		}
 	}]);
 
 	return productUtil;
@@ -256,5 +252,8 @@ var productUtil = function () {
 
 exports.default = productUtil;
 ;
+
+//Need to get the total quantity working as it bugs when removing an item and then writes out the last
+// quantity next to the sum of all the other quantities
 
 },{}]},{},[3]);
