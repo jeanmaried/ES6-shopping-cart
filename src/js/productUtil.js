@@ -15,6 +15,7 @@ export default class productUtil{
 		}
 		this.cartBuilder(sku, product);
 	}
+	//this sets the sessionstorage everytime the add to cart button is clicked
 
 
 	cartBuilder(sku, product){
@@ -41,6 +42,7 @@ export default class productUtil{
 		this.removeButton();
 		this.getcartItems();	
 	}
+	//this builds/rebuilds the cart everytime an item is added, updated, or removed
 
     updateButton(){
     	let update = document.getElementsByClassName('update');
@@ -50,8 +52,9 @@ export default class productUtil{
     			this.getCartInput(goGrabInput);
     		})
     	}
-    } // this section allows you to see what update button has been pressed and passes the values on to
-      // getCartInput
+    }
+    // this section allows you to see what update button has been pressed and passes the values on to
+    // getCartInput
 
     getCartInput(goGrabInput){
     	let thisSku = goGrabInput.getAttribute("data-sku");
@@ -66,8 +69,9 @@ export default class productUtil{
     			sessionStorage.setItem(thisSku,JSON.stringify(oldQuantity));
     		}
     		this.cartBuilder();
-    } //this method looks into the input to see if the value has changed. If no, do nothing. If yes, update
-      //session storage.
+    }
+    //this method looks into the input to see if the value has changed. If no, do nothing. If yes, update
+    //session storage.
 
     removeButton(){
     	let remove = document.getElementsByClassName('remove')
@@ -78,8 +82,9 @@ export default class productUtil{
 	    		this.cartBuilder();
 	    	})
     	}
-    } // this method removes the cart item from session storage and fires the cart builder
-      // which them rebuilds cart to erase said item
+    }
+    // this method removes the cart item from session storage and fires the cart builder
+    // which then rebuilds cart to erase said item
 
 	getcartItems(){
 		let totalPrice = 0;
@@ -93,13 +98,7 @@ export default class productUtil{
 			document.getElementById('price').innerHTML= totalPrice;
 			document.getElementById('cartnum').innerHTML= totalQny;
 	};
-
+	// updates the total quantity and total price at the top of the page
 };
-
-//Need to get the total quantity working as it bugs when removing an item and then writes out the last
-// quantity next to the sum of all the other quantities
-
-// for some reason i getcartInput is changing the quantity to a string but not letting it change back?
-// or i guess i can't figure out how to set sessionstorage as a number
 
 	
