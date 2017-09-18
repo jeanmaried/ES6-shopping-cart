@@ -13,7 +13,6 @@ export default class productUtil{
 			product.quantity = newValue;
 			sessionStorage.setItem(sku,JSON.stringify(product));
 		}
-		this.getcartItems();
 		this.cartBuilder(sku, product);
 	}
 
@@ -39,7 +38,8 @@ export default class productUtil{
 			$('#listItems').append(cartItem);
 		}
 		this.updateButton();
-		this.removeButton();		
+		this.removeButton();
+		this.getcartItems();	
 	}
 
     updateButton(){
@@ -60,10 +60,11 @@ export default class productUtil{
     		if (update_value.value == oldQuantity.quantity){
     		}
     		else{
-    			oldQuantity.quantity = update_value.value;
+    			console.log(typeof update_value.value);
+    			oldQuantity.quantity = parseInt(update_value.value);
+    			console.log(oldQuantity);
     			sessionStorage.setItem(thisSku,JSON.stringify(oldQuantity));
     		}
-    		this.getcartItems();
     		this.cartBuilder();
     } //this method looks into the input to see if the value has changed. If no, do nothing. If yes, update
       //session storage.
@@ -74,7 +75,6 @@ export default class productUtil{
 		   	let thisSku = remove[i].getAttribute("data-sku");
 	    	remove[i].addEventListener('click', ()=>{
 	    		sessionStorage.removeItem(thisSku);
-	    		this.getcartItems();
 	    		this.cartBuilder();
 	    	})
     	}
@@ -85,7 +85,8 @@ export default class productUtil{
 		let totalPrice = 0;
 		let totalQny = 0;
 		for (let key in sessionStorage) {
-			let x = JSON.parse(sessionStorage[key]);
+			let x = JSON.parse(sessionStorage.getItem([key]));
+			// console.log(x);
 			totalQny += x.quantity;
 			totalPrice += x.price * x.quantity;
 			}
@@ -97,5 +98,8 @@ export default class productUtil{
 
 //Need to get the total quantity working as it bugs when removing an item and then writes out the last
 // quantity next to the sum of all the other quantities
+
+// for some reason i getcartInput is changing the quantity to a string but not letting it change back?
+// or i guess i can't figure out how to set sessionstorage as a number
 
 	

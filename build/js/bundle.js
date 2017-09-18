@@ -141,6 +141,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -162,7 +164,6 @@ var productUtil = function () {
 				product.quantity = newValue;
 				sessionStorage.setItem(sku, JSON.stringify(product));
 			}
-			this.getcartItems();
 			this.cartBuilder(sku, product);
 		}
 	}, {
@@ -179,6 +180,7 @@ var productUtil = function () {
 			}
 			this.updateButton();
 			this.removeButton();
+			this.getcartItems();
 		}
 	}, {
 		key: 'updateButton',
@@ -202,10 +204,11 @@ var productUtil = function () {
 			var oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
 			var update_value = document.getElementById(thisSku);
 			if (update_value.value == oldQuantity.quantity) {} else {
-				oldQuantity.quantity = update_value.value;
+				console.log(_typeof(update_value.value));
+				oldQuantity.quantity = parseInt(update_value.value);
+				console.log(oldQuantity);
 				sessionStorage.setItem(thisSku, JSON.stringify(oldQuantity));
 			}
-			this.getcartItems();
 			this.cartBuilder();
 		} //this method looks into the input to see if the value has changed. If no, do nothing. If yes, update
 		//session storage.
@@ -221,7 +224,6 @@ var productUtil = function () {
 				var thisSku = remove[i].getAttribute("data-sku");
 				remove[i].addEventListener('click', function () {
 					sessionStorage.removeItem(thisSku);
-					_this2.getcartItems();
 					_this2.cartBuilder();
 				});
 			};
@@ -238,7 +240,8 @@ var productUtil = function () {
 			var totalPrice = 0;
 			var totalQny = 0;
 			for (var key in sessionStorage) {
-				var x = JSON.parse(sessionStorage[key]);
+				var x = JSON.parse(sessionStorage.getItem([key]));
+				// console.log(x);
 				totalQny += x.quantity;
 				totalPrice += x.price * x.quantity;
 			}
@@ -255,5 +258,8 @@ exports.default = productUtil;
 
 //Need to get the total quantity working as it bugs when removing an item and then writes out the last
 // quantity next to the sum of all the other quantities
+
+// for some reason i getcartInput is changing the quantity to a string but not letting it change back?
+// or i guess i can't figure out how to set sessionstorage as a number
 
 },{}]},{},[3]);
