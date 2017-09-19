@@ -24,6 +24,7 @@ export default class productUtil{
 			let cartItem = $('<div id="itemRows"></div>');
 			sku = key;
 			product = JSON.parse(sessionStorage[key]);
+			let totalPrice = product.price*product.quantity;
 		
 			cartItem.html(
 				'<div>'+'SKU'+'</div>'+
@@ -33,7 +34,7 @@ export default class productUtil{
 				'<div>'+'UNIT PRICE'+'</div>'+
 				'<div>'+product.price+'</div>'+
 				'<div>'+'TOTAL'+'</div>'+
-				'<div>'+product.price*product.quantity+'</div>'+
+				'<div>'+totalPrice.toFixed(2)+'</div>'+
 				'<button class="update" type="button" data-sku="'+sku+'">'+'UPDATE'+'</button>'+
 				'<button class="remove" type="button" data-sku="'+sku+'">'+'REMOVE'+'</button>');
 			$('#listItems').append(cartItem);

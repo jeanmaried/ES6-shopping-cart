@@ -177,8 +177,9 @@ var productUtil = function () {
 				var cartItem = $('<div id="itemRows"></div>');
 				sku = key;
 				product = JSON.parse(sessionStorage[key]);
+				var totalPrice = product.price * product.quantity;
 
-				cartItem.html('<div>' + 'SKU' + '</div>' + '<div>' + sku + '</div>' + '<div>' + 'QUANTITY' + '</div>' + '<input id="' + sku + '" type="number" value="' + product.quantity + '">' + '<div>' + 'UNIT PRICE' + '</div>' + '<div>' + product.price + '</div>' + '<div>' + 'TOTAL' + '</div>' + '<div>' + product.price * product.quantity + '</div>' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>');
+				cartItem.html('<div>' + 'SKU' + '</div>' + '<div>' + sku + '</div>' + '<div>' + 'QUANTITY' + '</div>' + '<input id="' + sku + '" type="number" value="' + product.quantity + '">' + '<div>' + 'UNIT PRICE' + '</div>' + '<div>' + product.price + '</div>' + '<div>' + 'TOTAL' + '</div>' + '<div>' + totalPrice.toFixed(2) + '</div>' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>');
 				$('#listItems').append(cartItem);
 			}
 			this.updateButton();
