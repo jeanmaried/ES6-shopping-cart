@@ -166,6 +166,9 @@ var productUtil = function () {
 			}
 			this.cartBuilder(sku, product);
 		}
+		//this sets the sessionstorage everytime the add to cart button is clicked
+
+
 	}, {
 		key: 'cartBuilder',
 		value: function cartBuilder(sku, product) {
@@ -182,6 +185,8 @@ var productUtil = function () {
 			this.removeButton();
 			this.getcartItems();
 		}
+		//this builds/rebuilds the cart everytime an item is added, updated, or removed
+
 	}, {
 		key: 'updateButton',
 		value: function updateButton() {
@@ -194,7 +199,8 @@ var productUtil = function () {
 					_this.getCartInput(goGrabInput);
 				});
 			}
-		} // this section allows you to see what update button has been pressed and passes the values on to
+		}
+		// this section allows you to see what update button has been pressed and passes the values on to
 		// getCartInput
 
 	}, {
@@ -210,7 +216,8 @@ var productUtil = function () {
 				sessionStorage.setItem(thisSku, JSON.stringify(oldQuantity));
 			}
 			this.cartBuilder();
-		} //this method looks into the input to see if the value has changed. If no, do nothing. If yes, update
+		}
+		//this method looks into the input to see if the value has changed. If no, do nothing. If yes, update
 		//session storage.
 
 	}, {
@@ -231,8 +238,9 @@ var productUtil = function () {
 			for (var i = 0; i < remove.length; i++) {
 				_loop();
 			}
-		} // this method removes the cart item from session storage and fires the cart builder
-		// which them rebuilds cart to erase said item
+		}
+		// this method removes the cart item from session storage and fires the cart builder
+		// which then rebuilds cart to erase said item
 
 	}, {
 		key: 'getcartItems',
@@ -245,7 +253,7 @@ var productUtil = function () {
 				totalQny += x.quantity;
 				totalPrice += x.price * x.quantity;
 			}
-			document.getElementById('price').innerHTML = totalPrice;
+			document.getElementById('price').innerHTML = totalPrice.toFixed(2);
 			document.getElementById('cartnum').innerHTML = totalQny;
 		}
 	}]);
@@ -255,11 +263,5 @@ var productUtil = function () {
 
 exports.default = productUtil;
 ;
-
-//Need to get the total quantity working as it bugs when removing an item and then writes out the last
-// quantity next to the sum of all the other quantities
-
-// for some reason i getcartInput is changing the quantity to a string but not letting it change back?
-// or i guess i can't figure out how to set sessionstorage as a number
 
 },{}]},{},[3]);

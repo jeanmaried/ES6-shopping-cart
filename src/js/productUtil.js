@@ -95,7 +95,7 @@ export default class productUtil{
 			totalQny += x.quantity;
 			totalPrice += x.price * x.quantity;
 			}
-			document.getElementById('price').innerHTML= totalPrice;
+			document.getElementById('price').innerHTML= totalPrice.toFixed(2);
 			document.getElementById('cartnum').innerHTML= totalQny;
 	};
 	// updates the total quantity and total price at the top of the page
