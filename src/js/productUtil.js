@@ -37,11 +37,11 @@ export default class productUtil{
 				'</div>'+
 				'<div class="padding-bottom-small">'+
 					'<div class="small">'+'UNIT PRICE:'+'</div>'+
-					'<div>'+product.price+'</div>'+
+					'<div>'+'$'+product.price+'</div>'+
 				'</div>'+
 				'<div class="padding-bottom-small">'+
 					'<div class="small">'+'TOTAL:'+'</div>'+
-					'<div>'+totalPrice.toFixed(2)+'</div>'+
+					'<div>'+'$'+totalPrice.toFixed(2)+'</div>'+
 				'</div>'+
 				'<div class="flex">'+
 					'<button class="update" type="button" data-sku="'+sku+'">'+'UPDATE'+'</button>'+
@@ -106,7 +106,7 @@ export default class productUtil{
 			totalQny += x.quantity;
 			totalPrice += x.price * x.quantity;
 			}
-			document.getElementById('price').innerHTML= totalPrice.toFixed(2);
+			document.getElementById('price').innerHTML= '$' + totalPrice.toFixed(2);
 			document.getElementById('cartnum').innerHTML= totalQny;
 	};
 	// updates the total quantity and total price at the top of the page

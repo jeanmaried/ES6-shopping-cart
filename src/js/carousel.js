@@ -11,7 +11,7 @@ export const carousel = (data) => {
 				let sku = data.products[i].sku;
 				let div = $('<div class="text-align padding-bottom"></div>');	
    				div.html('<div>'+description+'</div>'+
-   					'<img src='+image+'>'+'<div>'+price+'</div>'+'<div>'+'SKU: '+sku+'</div>'+
+   					'<img src='+image+'>'+'<div>'+'$'+price+'</div>'+'<div>'+'SKU: '+sku+'</div>'+
    					'<button class="atc" data-sku="'+sku+'" data-price="'+price+'">'+"ADD TO CART"+'</div>');
 				$("#here").append(div);
 			}

@@ -42,7 +42,7 @@ var carousel = exports.carousel = function carousel(data) {
 			var description = data.products[i].name;
 			var sku = data.products[i].sku;
 			var div = $('<div class="text-align padding-bottom"></div>');
-			div.html('<div>' + description + '</div>' + '<img src=' + image + '>' + '<div>' + price + '</div>' + '<div>' + 'SKU: ' + sku + '</div>' + '<button class="atc" data-sku="' + sku + '" data-price="' + price + '">' + "ADD TO CART" + '</div>');
+			div.html('<div>' + description + '</div>' + '<img src=' + image + '>' + '<div>' + '$' + price + '</div>' + '<div>' + 'SKU: ' + sku + '</div>' + '<button class="atc" data-sku="' + sku + '" data-price="' + price + '">' + "ADD TO CART" + '</div>');
 			$("#here").append(div);
 		} else {
 			break;
@@ -178,7 +178,7 @@ var productUtil = function () {
 				product = JSON.parse(sessionStorage[key]);
 				var totalPrice = product.price * product.quantity;
 
-				cartItem.html('<div class="padding-bottom-small">' + '<div class="small">' + 'SKU:' + '</div>' + '<div>' + sku + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'QUANTITY:' + '</div>' + '<input class="cart_input_size" id="' + sku + '" type="number" value="' + product.quantity + '">' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'UNIT PRICE:' + '</div>' + '<div>' + product.price + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'TOTAL:' + '</div>' + '<div>' + totalPrice.toFixed(2) + '</div>' + '</div>' + '<div class="flex">' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>' + '</div>');
+				cartItem.html('<div class="padding-bottom-small">' + '<div class="small">' + 'SKU:' + '</div>' + '<div>' + sku + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'QUANTITY:' + '</div>' + '<input class="cart_input_size" id="' + sku + '" type="number" value="' + product.quantity + '">' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'UNIT PRICE:' + '</div>' + '<div>' + '$' + product.price + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'TOTAL:' + '</div>' + '<div>' + '$' + totalPrice.toFixed(2) + '</div>' + '</div>' + '<div class="flex">' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>' + '</div>');
 				$('#listItems').append(cartItem);
 			}
 			this.updateButton();
@@ -253,7 +253,7 @@ var productUtil = function () {
 				totalQny += x.quantity;
 				totalPrice += x.price * x.quantity;
 			}
-			document.getElementById('price').innerHTML = totalPrice.toFixed(2);
+			document.getElementById('price').innerHTML = '$' + totalPrice.toFixed(2);
 			document.getElementById('cartnum').innerHTML = totalQny;
 		}
 	}]);
