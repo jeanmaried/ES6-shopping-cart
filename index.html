@@ -4,41 +4,32 @@
         <link rel="stylesheet" type="text/css" href="./build/css/build.css">
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     </head>
-    <body>
-    	<header class="padding flex direction-column align-items-center text-align">
-    		
+    <body class="flex ">
+        <section class="shop flex direction-column align-items-center text-align">
+                <h1 class="padding-bottom">SHOP FROM BEST BUY</h1>
+                <div class="buttons padding-bottom flex direction-column">
+                    <button class="categories" value="(condition=new&(categoryPath.id=abcat0502000))">LAPTOPS</button>
+                    <button class="categories" value="(condition=new&(categoryPath.id=pcmcat209400050001))">CELL PHONES</button>
+                    <button class="categories" value="(condition=new&(categoryPath.id=abcat0101000))">TVs</button>
+                    <button class="categories" value="(condition=new&(categoryPath.id=abcat0204000))">HEADPHONES</button>
+                </div>				
+                <div>
+                    <div id="here" class="flex direction-column"></div>
+                </div>
+                
+                </div>
+        </section>
+        
+    	<section class="your_cart padding flex direction-column align-items-center text-align">
 
+            <h1><i class="fa fa-shopping-cart" aria-hidden="true"></i></h1>
 
             <div>
                 <div id="cartnum"></div>
                 <div id="price"></div>
             </div>
 
-
-            <button id="cart">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-            </button>
-            <div id="listItems">
-            </div>
-
-    		<div>
-        		<button type="button">SHOP NOW</button>
-        	</div>
-        </header>
-
-        <section class="shop">
-        	
-        	<div>
-        		<button class="categories" value="(condition=new&(categoryPath.id=abcat0502000))">LAPTOPS</button>
-				<button class="categories" value="(condition=new&(categoryPath.id=pcmcat209400050001))">CELL PHONES</button>
-        		<button class="categories" value="(condition=new&(categoryPath.id=abcat0101000))">TVs</button>
-				<button class="categories" value="(condition=new&(categoryPath.id=abcat0204000))">HEADPHONES</button>				
-  				<div>
-    				<div id="here" class="flex direction-row"></div>
- 	 			</div>
-			
-			</div>
-
+            <div id="listItems" class="flex direction-column"></div>
 
         </section>
 

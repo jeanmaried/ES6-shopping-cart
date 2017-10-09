@@ -21,22 +21,32 @@ export default class productUtil{
 	cartBuilder(sku, product){
 		document.getElementById('listItems').innerHTML="";
 		for(let key in sessionStorage){
-			let cartItem = $('<div id="itemRows"></div>');
+			let cartItem = $('<div id="itemRows" class="your_cart"></div>');
 			sku = key;
 			product = JSON.parse(sessionStorage[key]);
 			let totalPrice = product.price*product.quantity;
 		
 			cartItem.html(
-				'<div>'+'SKU'+'</div>'+
-				'<div>'+sku+'</div>'+
-				'<div>'+'QUANTITY'+'</div>'+
-				'<input id="'+sku+'" type="number" value="'+product.quantity+'">'+
-				'<div>'+'UNIT PRICE'+'</div>'+
-				'<div>'+product.price+'</div>'+
-				'<div>'+'TOTAL'+'</div>'+
-				'<div>'+totalPrice.toFixed(2)+'</div>'+
-				'<button class="update" type="button" data-sku="'+sku+'">'+'UPDATE'+'</button>'+
-				'<button class="remove" type="button" data-sku="'+sku+'">'+'REMOVE'+'</button>');
+				'<div class="padding-bottom-small">'+
+					'<div class="small">'+'SKU:'+'</div>'+
+					'<div>'+sku+'</div>'+
+				'</div>'+
+				'<div class="padding-bottom-small">'+
+					'<div class="small">'+'QUANTITY:'+'</div>'+
+					'<input class="cart_input_size" id="'+sku+'" type="number" value="'+product.quantity+'">'+
+				'</div>'+
+				'<div class="padding-bottom-small">'+
+					'<div class="small">'+'UNIT PRICE:'+'</div>'+
+					'<div>'+product.price+'</div>'+
+				'</div>'+
+				'<div class="padding-bottom-small">'+
+					'<div class="small">'+'TOTAL:'+'</div>'+
+					'<div>'+totalPrice.toFixed(2)+'</div>'+
+				'</div>'+
+				'<div class="flex">'+
+					'<button class="update" type="button" data-sku="'+sku+'">'+'UPDATE'+'</button>'+
+					'<button class="remove" type="button" data-sku="'+sku+'">'+'REMOVE'+'</button>'+
+				'</div>');
 			$('#listItems').append(cartItem);
 		}
 		this.updateButton();
