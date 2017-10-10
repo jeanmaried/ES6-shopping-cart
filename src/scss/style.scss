@@ -56,3 +56,9 @@ body{
 .black{
 	color: black;
 }
+
+@media screen and (max-width: 600px){
+	body{
+		flex-direction: column-reverse;
+	}
+}
