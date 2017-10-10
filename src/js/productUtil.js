@@ -20,8 +20,8 @@ export default class productUtil{
 
 	cartBuilder(sku, product){
 		document.getElementById('listItems').innerHTML="";
-		if (sessionStorage.getItem(sku) == undefined){
-			console.log("hi");
+		if (sessionStorage === null){
+			//do nothing
 		}
 		else{
 			for(let key in sessionStorage){
@@ -58,7 +58,6 @@ export default class productUtil{
 			this.getcartItems();	
 		}
 	}
-	//this builds/rebuilds the cart everytime an item is added, updated, or removed
 
     updateButton(){
     	let update = document.getElementsByClassName('update');
@@ -69,8 +68,6 @@ export default class productUtil{
     		})
     	}
     }
-    // this section allows you to see what update button has been pressed and passes the values on to
-    // getCartInput
 
     getCartInput(goGrabInput){
     	let thisSku = goGrabInput.getAttribute("data-sku");
@@ -86,8 +83,6 @@ export default class productUtil{
     		}
     		this.cartBuilder();
     }
-    //this method looks into the input to see if the value has changed. If no, do nothing. If yes, update
-    //session storage.
 
     removeButton(){
     	let remove = document.getElementsByClassName('remove')
@@ -99,22 +94,18 @@ export default class productUtil{
 	    	})
     	}
     }
-    // this method removes the cart item from session storage and fires the cart builder
-    // which then rebuilds cart to erase said item
 
 	getcartItems(){
 		let totalPrice = 0;
 		let totalQny = 0;
 		for (let key in sessionStorage) {
 			let x = JSON.parse(sessionStorage.getItem([key]));
-			// console.log(x);
 			totalQny += x.quantity;
 			totalPrice += x.price * x.quantity;
 			}
-			document.getElementById('price').innerHTML= '$' + totalPrice.toFixed(2);
-			document.getElementById('cartnum').innerHTML= totalQny;
+		document.getElementById('price').innerHTML= '$' + totalPrice.toFixed(2);
+		document.getElementById('cartnum').innerHTML= totalQny;
 	};
-	// updates the total quantity and total price at the top of the page
 };
 
 	
