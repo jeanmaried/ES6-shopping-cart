@@ -20,8 +20,8 @@ export default class productUtil{
 
 	cartBuilder(sku, product){
 		document.getElementById('listItems').innerHTML="";
-		if (sessionStorage === null){
-			//do nothing
+		if (sessionStorage.getItem(sku) == undefined){
+			console.log("hi");
 		}
 		else{
 			for(let key in sessionStorage){

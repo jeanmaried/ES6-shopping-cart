@@ -134,7 +134,7 @@ exports.default = App;
 var x = new App();
 
 },{"./bestbuy":1,"./carousel":2,"./productUtil":4}],4:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -152,7 +152,7 @@ var productUtil = function () {
 	}
 
 	_createClass(productUtil, [{
-		key: 'addToCart',
+		key: "addToCart",
 		value: function addToCart(sku, price) {
 			var product = { price: price, quantity: 1 };
 			if (sessionStorage.getItem(sku) == undefined) {
@@ -169,11 +169,11 @@ var productUtil = function () {
 
 
 	}, {
-		key: 'cartBuilder',
+		key: "cartBuilder",
 		value: function cartBuilder(sku, product) {
 			document.getElementById('listItems').innerHTML = "";
-			if (sessionStorage == null) {
-				//do nothing
+			if (sessionStorage.getItem(sku) == undefined) {
+				console.log("hi");
 			} else {
 				for (var key in sessionStorage) {
 					var cartItem = $('<div id="itemRows" class="your_cart"></div>');
@@ -192,7 +192,7 @@ var productUtil = function () {
 		//this builds/rebuilds the cart everytime an item is added, updated, or removed
 
 	}, {
-		key: 'updateButton',
+		key: "updateButton",
 		value: function updateButton() {
 			var _this = this;
 
@@ -208,7 +208,7 @@ var productUtil = function () {
 		// getCartInput
 
 	}, {
-		key: 'getCartInput',
+		key: "getCartInput",
 		value: function getCartInput(goGrabInput) {
 			var thisSku = goGrabInput.getAttribute("data-sku");
 			var oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
@@ -225,7 +225,7 @@ var productUtil = function () {
 		//session storage.
 
 	}, {
-		key: 'removeButton',
+		key: "removeButton",
 		value: function removeButton() {
 			var _this2 = this;
 
@@ -247,7 +247,7 @@ var productUtil = function () {
 		// which then rebuilds cart to erase said item
 
 	}, {
-		key: 'getcartItems',
+		key: "getcartItems",
 		value: function getcartItems() {
 			var totalPrice = 0;
 			var totalQny = 0;
