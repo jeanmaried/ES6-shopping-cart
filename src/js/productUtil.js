@@ -20,7 +20,7 @@ export default class productUtil{
 
 	cartBuilder(sku, product){
 		document.getElementById('listItems').innerHTML="";
-		if (sessionStorage == null){
+		if (sessionStorage === null){
 			//do nothing
 		}
 		else{
@@ -55,8 +55,8 @@ export default class productUtil{
 			}
 			this.updateButton();
 			this.removeButton();
-			this.getcartItems();
-		}	
+			this.getcartItems();	
+		}
 	}
 	//this builds/rebuilds the cart everytime an item is added, updated, or removed
 
