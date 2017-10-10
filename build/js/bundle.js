@@ -41,9 +41,10 @@ var carousel = exports.carousel = function carousel(data) {
 			var price = data.products[i].regularPrice;
 			var description = data.products[i].name;
 			var sku = data.products[i].sku;
-			var div = $('<div class="text-align padding-bottom"></div>');
-			div.html('<div>' + description + '</div>' + '<img src=' + image + '>' + '<div>' + '$' + price + '</div>' + '<div>' + 'SKU: ' + sku + '</div>' + '<button class="atc" data-sku="' + sku + '" data-price="' + price + '">' + "ADD TO CART" + '</div>');
-			$("#here").append(div);
+			var div = document.createElement('div');
+			div.classList.add("text-align", "padding-bottom");
+			div.innerHTML = '<div>' + description + '</div>' + '<img src=' + image + '>' + '<div>' + '$' + price + '</div>' + '<div>' + 'SKU: ' + sku + '</div>' + '<button class="atc" data-sku="' + sku + '" data-price="' + price + '">' + "ADD TO CART" + '</div>';
+			document.getElementById('here').appendChild(div);
 		} else {
 			break;
 		};
@@ -134,7 +135,7 @@ exports.default = App;
 var x = new App();
 
 },{"./bestbuy":1,"./carousel":2,"./productUtil":4}],4:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -152,7 +153,7 @@ var productUtil = function () {
 	}
 
 	_createClass(productUtil, [{
-		key: 'addToCart',
+		key: "addToCart",
 		value: function addToCart(sku, price) {
 			var product = { price: price, quantity: 1 };
 			if (sessionStorage.getItem(sku) == undefined) {
@@ -169,20 +170,21 @@ var productUtil = function () {
 
 
 	}, {
-		key: 'cartBuilder',
+		key: "cartBuilder",
 		value: function cartBuilder(sku, product) {
 			document.getElementById('listItems').innerHTML = "";
 			if (sessionStorage === null) {
 				//do nothing
 			} else {
 				for (var key in sessionStorage) {
-					var cartItem = $('<div id="itemRows" class="your_cart"></div>');
+					var cartItem = document.createElement("div");
+					cartItem.setAttribute("id", "itemRows");
 					sku = key;
 					product = JSON.parse(sessionStorage[key]);
 					var totalPrice = product.price * product.quantity;
 
-					cartItem.html('<div class="padding-bottom-small">' + '<div class="small">' + 'SKU:' + '</div>' + '<div>' + sku + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'QUANTITY:' + '</div>' + '<input class="cart_input_size" id="' + sku + '" type="number" value="' + product.quantity + '">' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'UNIT PRICE:' + '</div>' + '<div>' + '$' + product.price + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'TOTAL:' + '</div>' + '<div>' + '$' + totalPrice.toFixed(2) + '</div>' + '</div>' + '<div class="flex">' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>' + '</div>');
-					$('#listItems').append(cartItem);
+					cartItem.innerHTML = '<div class="padding-bottom-small">' + '<div class="small">' + 'SKU:' + '</div>' + '<div>' + sku + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'QUANTITY:' + '</div>' + '<input class="cart_input_size" id="' + sku + '" type="number" value="' + product.quantity + '">' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'UNIT PRICE:' + '</div>' + '<div>' + '$' + product.price + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'TOTAL:' + '</div>' + '<div>' + '$' + totalPrice.toFixed(2) + '</div>' + '</div>' + '<div class="flex">' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>' + '</div>';
+					document.getElementById('listItems').appendChild(cartItem);
 				}
 				this.updateButton();
 				this.removeButton();
@@ -190,7 +192,7 @@ var productUtil = function () {
 			}
 		}
 	}, {
-		key: 'updateButton',
+		key: "updateButton",
 		value: function updateButton() {
 			var _this = this;
 
@@ -203,7 +205,7 @@ var productUtil = function () {
 			}
 		}
 	}, {
-		key: 'getCartInput',
+		key: "getCartInput",
 		value: function getCartInput(goGrabInput) {
 			var thisSku = goGrabInput.getAttribute("data-sku");
 			var oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
@@ -217,7 +219,7 @@ var productUtil = function () {
 			this.cartBuilder();
 		}
 	}, {
-		key: 'removeButton',
+		key: "removeButton",
 		value: function removeButton() {
 			var _this2 = this;
 
@@ -236,7 +238,7 @@ var productUtil = function () {
 			}
 		}
 	}, {
-		key: 'getcartItems',
+		key: "getcartItems",
 		value: function getcartItems() {
 			var totalPrice = 0;
 			var totalQny = 0;

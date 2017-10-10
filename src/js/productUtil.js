@@ -25,12 +25,13 @@ export default class productUtil{
 		}
 		else{
 			for(let key in sessionStorage){
-				let cartItem = $('<div id="itemRows" class="your_cart"></div>');
+				let cartItem = document.createElement("div");
+				cartItem.setAttribute("id","itemRows");
 				sku = key;
 				product = JSON.parse(sessionStorage[key]);
 				let totalPrice = product.price*product.quantity;
 			
-				cartItem.html(
+				cartItem.innerHTML=(
 					'<div class="padding-bottom-small">'+
 						'<div class="small">'+'SKU:'+'</div>'+
 						'<div>'+sku+'</div>'+
@@ -51,7 +52,7 @@ export default class productUtil{
 						'<button class="update" type="button" data-sku="'+sku+'">'+'UPDATE'+'</button>'+
 						'<button class="remove" type="button" data-sku="'+sku+'">'+'REMOVE'+'</button>'+
 					'</div>');
-				$('#listItems').append(cartItem);
+				document.getElementById('listItems').appendChild(cartItem);
 			}
 			this.updateButton();
 			this.removeButton();
