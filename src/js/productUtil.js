@@ -20,38 +20,43 @@ export default class productUtil{
 
 	cartBuilder(sku, product){
 		document.getElementById('listItems').innerHTML="";
-		for(let key in sessionStorage){
-			let cartItem = $('<div id="itemRows" class="your_cart"></div>');
-			sku = key;
-			product = JSON.parse(sessionStorage[key]);
-			let totalPrice = product.price*product.quantity;
-		
-			cartItem.html(
-				'<div class="padding-bottom-small">'+
-					'<div class="small">'+'SKU:'+'</div>'+
-					'<div>'+sku+'</div>'+
-				'</div>'+
-				'<div class="padding-bottom-small">'+
-					'<div class="small">'+'QUANTITY:'+'</div>'+
-					'<input class="cart_input_size" id="'+sku+'" type="number" value="'+product.quantity+'">'+
-				'</div>'+
-				'<div class="padding-bottom-small">'+
-					'<div class="small">'+'UNIT PRICE:'+'</div>'+
-					'<div>'+'$'+product.price+'</div>'+
-				'</div>'+
-				'<div class="padding-bottom-small">'+
-					'<div class="small">'+'TOTAL:'+'</div>'+
-					'<div>'+'$'+totalPrice.toFixed(2)+'</div>'+
-				'</div>'+
-				'<div class="flex">'+
-					'<button class="update" type="button" data-sku="'+sku+'">'+'UPDATE'+'</button>'+
-					'<button class="remove" type="button" data-sku="'+sku+'">'+'REMOVE'+'</button>'+
-				'</div>');
-			$('#listItems').append(cartItem);
+		if (sessionStorage == null){
+			//do nothing
 		}
-		this.updateButton();
-		this.removeButton();
-		this.getcartItems();	
+		else{
+			for(let key in sessionStorage){
+				let cartItem = $('<div id="itemRows" class="your_cart"></div>');
+				sku = key;
+				product = JSON.parse(sessionStorage[key]);
+				let totalPrice = product.price*product.quantity;
+			
+				cartItem.html(
+					'<div class="padding-bottom-small">'+
+						'<div class="small">'+'SKU:'+'</div>'+
+						'<div>'+sku+'</div>'+
+					'</div>'+
+					'<div class="padding-bottom-small">'+
+						'<div class="small">'+'QUANTITY:'+'</div>'+
+						'<input class="cart_input_size" id="'+sku+'" type="number" value="'+product.quantity+'">'+
+					'</div>'+
+					'<div class="padding-bottom-small">'+
+						'<div class="small">'+'UNIT PRICE:'+'</div>'+
+						'<div>'+'$'+product.price+'</div>'+
+					'</div>'+
+					'<div class="padding-bottom-small">'+
+						'<div class="small">'+'TOTAL:'+'</div>'+
+						'<div>'+'$'+totalPrice.toFixed(2)+'</div>'+
+					'</div>'+
+					'<div class="flex">'+
+						'<button class="update" type="button" data-sku="'+sku+'">'+'UPDATE'+'</button>'+
+						'<button class="remove" type="button" data-sku="'+sku+'">'+'REMOVE'+'</button>'+
+					'</div>');
+				$('#listItems').append(cartItem);
+			}
+			this.updateButton();
+			this.removeButton();
+			this.getcartItems();
+		}	
 	}
 	//this builds/rebuilds the cart everytime an item is added, updated, or removed
 
