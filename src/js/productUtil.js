@@ -22,12 +22,10 @@ export default class productUtil{
 		if (sessionStorage){
 
 			for(let key in sessionStorage){
+				if(sessionStorage.hasOwnProperty(key)){
 				let cartItem = document.createElement("div");
 				cartItem.setAttribute("id","itemRows");
 				product = JSON.parse(sessionStorage[key]);
-				console.log(sessionStorage);
-				console.log(key);
-				console.log(sessionStorage[key])
 				let totalPrice = product.price*product.quantity;
 			
 				cartItem.innerHTML=(
@@ -52,6 +50,7 @@ export default class productUtil{
 						'<button class="remove" type="button" data-sku="'+key+'">'+'REMOVE'+'</button>'+
 					'</div>');
 				document.getElementById('listItems').appendChild(cartItem);
+				}
 			}
 			this.updateButton();
 			this.removeButton();
@@ -95,10 +94,12 @@ export default class productUtil{
 		let totalPrice = 0;
 		let totalQny = 0;
 		for (let key in sessionStorage) {
+			if(sessionStorage.hasOwnProperty(key)){
 			let x = JSON.parse(sessionStorage.getItem([key]));
 			totalQny += x.quantity;
 			totalPrice += x.price * x.quantity;
 			}
+		}
 		document.getElementById('price').innerHTML= '$' + totalPrice.toFixed(2);
 		document.getElementById('cartnum').innerHTML= totalQny;
 	};

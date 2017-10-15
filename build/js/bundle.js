@@ -171,16 +171,15 @@ var productUtil = function () {
 			if (sessionStorage) {
 
 				for (var key in sessionStorage) {
-					var cartItem = document.createElement("div");
-					cartItem.setAttribute("id", "itemRows");
-					product = JSON.parse(sessionStorage[key]);
-					console.log(sessionStorage);
-					console.log(key);
-					console.log(sessionStorage[key]);
-					var totalPrice = product.price * product.quantity;
+					if (sessionStorage.hasOwnProperty(key)) {
+						var cartItem = document.createElement("div");
+						cartItem.setAttribute("id", "itemRows");
+						product = JSON.parse(sessionStorage[key]);
+						var totalPrice = product.price * product.quantity;
 
-					cartItem.innerHTML = '<div class="padding-bottom-small">' + '<div class="small">' + 'SKU:' + '</div>' + '<div>' + key + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'QUANTITY:' + '</div>' + '<input class="cart_input_size" id="' + key + '" type="number" value="' + product.quantity + '">' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'UNIT PRICE:' + '</div>' + '<div>' + '$' + product.price + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'TOTAL:' + '</div>' + '<div>' + '$' + totalPrice.toFixed(2) + '</div>' + '</div>' + '<div class="flex">' + '<button class="update" type="button" data-sku="' + key + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + key + '">' + 'REMOVE' + '</button>' + '</div>';
-					document.getElementById('listItems').appendChild(cartItem);
+						cartItem.innerHTML = '<div class="padding-bottom-small">' + '<div class="small">' + 'SKU:' + '</div>' + '<div>' + key + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'QUANTITY:' + '</div>' + '<input class="cart_input_size" id="' + key + '" type="number" value="' + product.quantity + '">' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'UNIT PRICE:' + '</div>' + '<div>' + '$' + product.price + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'TOTAL:' + '</div>' + '<div>' + '$' + totalPrice.toFixed(2) + '</div>' + '</div>' + '<div class="flex">' + '<button class="update" type="button" data-sku="' + key + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + key + '">' + 'REMOVE' + '</button>' + '</div>';
+						document.getElementById('listItems').appendChild(cartItem);
+					}
 				}
 				this.updateButton();
 				this.removeButton();
@@ -237,9 +236,11 @@ var productUtil = function () {
 			var totalPrice = 0;
 			var totalQny = 0;
 			for (var key in sessionStorage) {
-				var x = JSON.parse(sessionStorage.getItem([key]));
-				totalQny += x.quantity;
-				totalPrice += x.price * x.quantity;
+				if (sessionStorage.hasOwnProperty(key)) {
+					var x = JSON.parse(sessionStorage.getItem([key]));
+					totalQny += x.quantity;
+					totalPrice += x.price * x.quantity;
+				}
 			}
 			document.getElementById('price').innerHTML = '$' + totalPrice.toFixed(2);
 			document.getElementById('cartnum').innerHTML = totalQny;
