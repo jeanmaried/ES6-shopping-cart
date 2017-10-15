@@ -141,8 +141,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -166,9 +164,6 @@ var productUtil = function () {
 			}
 			this.cartBuilder(sku, product);
 		}
-		//this sets the sessionstorage everytime the add to cart button is clicked
-
-
 	}, {
 		key: "cartBuilder",
 		value: function cartBuilder(sku, product) {
@@ -178,11 +173,13 @@ var productUtil = function () {
 				for (var key in sessionStorage) {
 					var cartItem = document.createElement("div");
 					cartItem.setAttribute("id", "itemRows");
-					sku = key;
 					product = JSON.parse(sessionStorage[key]);
+					console.log(sessionStorage);
+					console.log(key);
+					console.log(sessionStorage[key]);
 					var totalPrice = product.price * product.quantity;
 
-					cartItem.innerHTML = '<div class="padding-bottom-small">' + '<div class="small">' + 'SKU:' + '</div>' + '<div>' + sku + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'QUANTITY:' + '</div>' + '<input class="cart_input_size" id="' + sku + '" type="number" value="' + product.quantity + '">' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'UNIT PRICE:' + '</div>' + '<div>' + '$' + product.price + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'TOTAL:' + '</div>' + '<div>' + '$' + totalPrice.toFixed(2) + '</div>' + '</div>' + '<div class="flex">' + '<button class="update" type="button" data-sku="' + sku + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + sku + '">' + 'REMOVE' + '</button>' + '</div>';
+					cartItem.innerHTML = '<div class="padding-bottom-small">' + '<div class="small">' + 'SKU:' + '</div>' + '<div>' + key + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'QUANTITY:' + '</div>' + '<input class="cart_input_size" id="' + key + '" type="number" value="' + product.quantity + '">' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'UNIT PRICE:' + '</div>' + '<div>' + '$' + product.price + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'TOTAL:' + '</div>' + '<div>' + '$' + totalPrice.toFixed(2) + '</div>' + '</div>' + '<div class="flex">' + '<button class="update" type="button" data-sku="' + key + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + key + '">' + 'REMOVE' + '</button>' + '</div>';
 					document.getElementById('listItems').appendChild(cartItem);
 				}
 				this.updateButton();
@@ -210,9 +207,7 @@ var productUtil = function () {
 			var oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
 			var update_value = document.getElementById(thisSku);
 			if (update_value.value !== oldQuantity.quantity) {
-				console.log(_typeof(update_value.value));
 				oldQuantity.quantity = parseInt(update_value.value);
-				console.log(oldQuantity);
 				sessionStorage.setItem(thisSku, JSON.stringify(oldQuantity));
 			}
 			this.cartBuilder();

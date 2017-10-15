@@ -15,7 +15,6 @@ export default class productUtil{
 		}
 		this.cartBuilder(sku, product);
 	}
-	//this sets the sessionstorage everytime the add to cart button is clicked
 
 
 	cartBuilder(sku, product){
@@ -25,18 +24,20 @@ export default class productUtil{
 			for(let key in sessionStorage){
 				let cartItem = document.createElement("div");
 				cartItem.setAttribute("id","itemRows");
-				sku = key;
 				product = JSON.parse(sessionStorage[key]);
+				console.log(sessionStorage);
+				console.log(key);
+				console.log(sessionStorage[key])
 				let totalPrice = product.price*product.quantity;
 			
 				cartItem.innerHTML=(
 					'<div class="padding-bottom-small">'+
 						'<div class="small">'+'SKU:'+'</div>'+
-						'<div>'+sku+'</div>'+
+						'<div>'+key+'</div>'+
 					'</div>'+
 					'<div class="padding-bottom-small">'+
 						'<div class="small">'+'QUANTITY:'+'</div>'+
-						'<input class="cart_input_size" id="'+sku+'" type="number" value="'+product.quantity+'">'+
+						'<input class="cart_input_size" id="'+key+'" type="number" value="'+product.quantity+'">'+
 					'</div>'+
 					'<div class="padding-bottom-small">'+
 						'<div class="small">'+'UNIT PRICE:'+'</div>'+
@@ -47,8 +48,8 @@ export default class productUtil{
 						'<div>'+'$'+totalPrice.toFixed(2)+'</div>'+
 					'</div>'+
 					'<div class="flex">'+
-						'<button class="update" type="button" data-sku="'+sku+'">'+'UPDATE'+'</button>'+
-						'<button class="remove" type="button" data-sku="'+sku+'">'+'REMOVE'+'</button>'+
+						'<button class="update" type="button" data-sku="'+key+'">'+'UPDATE'+'</button>'+
+						'<button class="remove" type="button" data-sku="'+key+'">'+'REMOVE'+'</button>'+
 					'</div>');
 				document.getElementById('listItems').appendChild(cartItem);
 			}
@@ -73,9 +74,7 @@ export default class productUtil{
     	let oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
     	let update_value = document.getElementById(thisSku);
     		if (update_value.value !== oldQuantity.quantity){
-    			console.log(typeof update_value.value);
     			oldQuantity.quantity = parseInt(update_value.value);
-    			console.log(oldQuantity);
     			sessionStorage.setItem(thisSku,JSON.stringify(oldQuantity));
     		}
     		this.cartBuilder();
