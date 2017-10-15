@@ -20,10 +20,8 @@ export default class productUtil{
 
 	cartBuilder(sku, product){
 		document.getElementById('listItems').innerHTML="";
-		if (sessionStorage === null){
-			//do nothing
-		}
-		else{
+		if (sessionStorage){
+
 			for(let key in sessionStorage){
 				let cartItem = document.createElement("div");
 				cartItem.setAttribute("id","itemRows");
@@ -74,9 +72,7 @@ export default class productUtil{
     	let thisSku = goGrabInput.getAttribute("data-sku");
     	let oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
     	let update_value = document.getElementById(thisSku);
-    		if (update_value.value == oldQuantity.quantity){
-    		}
-    		else{
+    		if (update_value.value !== oldQuantity.quantity){
     			console.log(typeof update_value.value);
     			oldQuantity.quantity = parseInt(update_value.value);
     			console.log(oldQuantity);

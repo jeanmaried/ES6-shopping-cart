@@ -173,9 +173,8 @@ var productUtil = function () {
 		key: "cartBuilder",
 		value: function cartBuilder(sku, product) {
 			document.getElementById('listItems').innerHTML = "";
-			if (sessionStorage === null) {
-				//do nothing
-			} else {
+			if (sessionStorage) {
+
 				for (var key in sessionStorage) {
 					var cartItem = document.createElement("div");
 					cartItem.setAttribute("id", "itemRows");
@@ -210,7 +209,7 @@ var productUtil = function () {
 			var thisSku = goGrabInput.getAttribute("data-sku");
 			var oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
 			var update_value = document.getElementById(thisSku);
-			if (update_value.value == oldQuantity.quantity) {} else {
+			if (update_value.value !== oldQuantity.quantity) {
 				console.log(_typeof(update_value.value));
 				oldQuantity.quantity = parseInt(update_value.value);
 				console.log(oldQuantity);
