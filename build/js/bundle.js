@@ -25,232 +25,231 @@ exports.default = function (obj) {
 };
 
 },{}],2:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var carousel = exports.carousel = function carousel(data) {
-
-	document.getElementById("here").innerHTML = "";
-
-	for (var i = 0; i < data.products.length; i++) {
-
-		if (data.products[i].largeImage.length) {
-			var image = data.products[i].largeImage;
-			var price = data.products[i].regularPrice;
-			var description = data.products[i].name;
-			var sku = data.products[i].sku;
-			var div = document.createElement('div');
-			div.classList.add("text-align", "padding-bottom");
-			div.innerHTML = '<div>' + description + '</div>' + '<img src=' + image + '>' + '<div>' + '$' + price + '</div>' + '<div>' + 'SKU: ' + sku + '</div>' + '<button class="atc" data-sku="' + sku + '" data-price="' + price + '">' + "ADD TO CART" + '</div>';
-			document.getElementById('here').appendChild(div);
-		} else {
-			break;
-		};
-	};
-};
-
-},{}],3:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _bestbuy = require("./bestbuy");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _bestbuy2 = _interopRequireDefault(_bestbuy);
+var shop = function () {
+  function shop() {
+    _classCallCheck(this, shop);
+  }
 
-var _carousel = require("./carousel");
+  _createClass(shop, [{
+    key: 'addToCart',
+    value: function addToCart(sku, price) {
+      var product = { price: price, quantity: 1 };
+      if (sessionStorage.getItem(sku) == undefined) {
+        sessionStorage.setItem(sku, JSON.stringify(product));
+      } else {
+        var oldValue = JSON.parse(sessionStorage.getItem(sku, product));
+        var newValue = oldValue.quantity + 1;
+        product.quantity = newValue;
+        sessionStorage.setItem(sku, JSON.stringify(product));
+      }
+      this.cartBuilder(sku, product);
+    }
+  }, {
+    key: 'cartBuilder',
+    value: function cartBuilder(sku, product) {
+      document.getElementById('listItems').innerHTML = '';
+      if (sessionStorage) {
+        for (var key in sessionStorage) {
+          if (sessionStorage.hasOwnProperty(key)) {
+            var cartItem = document.createElement('div');
+            cartItem.setAttribute('id', 'itemRows');
+            product = JSON.parse(sessionStorage[key]);
+            var totalPrice = product.price * product.quantity;
 
-var _productUtil = require("./productUtil");
+            cartItem.innerHTML = '<div class="flex padding-bottom-small">' + '<div class="small">' + '</div>' + '<div class="cart_title_spacing">' + key + '</div>' + '</div>' + '<div class="flex padding-bottom-small">' + '<div class="small">' + '</div>' + '<input class="cart_title_spacing" id="' + key + '" type="number" value="' + product.quantity + '">' + '</div>' + '<div class="flex padding-bottom-small">' + '<div class="small">' + '</div>' + '<div class="cart_title_spacing">' + '$' + product.price + '</div>' + '</div>' + '<div class="flex padding-bottom-small">' + '<div class="small">' + '</div>' + '<div class="cart_title_spacing">' + '$' + totalPrice.toFixed(2) + '</div>' + '</div>' + '<div class="flex">' + '<button class="update" type="button" data-sku="' + key + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + key + '">' + 'REMOVE' + '</button>' + '</div>';
+            document.getElementById('listItems').appendChild(cartItem);
+          }
+        }
+        this.updateButton();
+        this.removeButton();
+        this.getcartItems();
+      }
+    }
+  }, {
+    key: 'updateButton',
+    value: function updateButton() {
+      var _this = this;
 
-var _productUtil2 = _interopRequireDefault(_productUtil);
+      var update = document.getElementsByClassName('update');
+      for (var i = 0; i < update.length; i++) {
+        update[i].addEventListener('click', function (e) {
+          var goGrabInput = e.target;
+          _this.getCartInput(goGrabInput);
+        });
+      }
+    }
+  }, {
+    key: 'getCartInput',
+    value: function getCartInput(goGrabInput) {
+      var thisSku = goGrabInput.getAttribute('data-sku');
+      var oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
+      var update_value = document.getElementById(thisSku);
+      if (update_value.value !== oldQuantity.quantity) {
+        oldQuantity.quantity = parseInt(update_value.value);
+        sessionStorage.setItem(thisSku, JSON.stringify(oldQuantity));
+      }
+      this.cartBuilder();
+    }
+  }, {
+    key: 'removeButton',
+    value: function removeButton() {
+      var _this2 = this;
+
+      var remove = document.getElementsByClassName('remove');
+
+      var _loop = function _loop() {
+        var thisSku = remove[i].getAttribute('data-sku');
+        remove[i].addEventListener('click', function () {
+          sessionStorage.removeItem(thisSku);
+          _this2.cartBuilder();
+        });
+      };
+
+      for (var i = 0; i < remove.length; i++) {
+        _loop();
+      }
+    }
+  }, {
+    key: 'getcartItems',
+    value: function getcartItems() {
+      var totalPrice = 0;
+      var totalQny = 0;
+      for (var key in sessionStorage) {
+        if (sessionStorage.hasOwnProperty(key)) {
+          var x = JSON.parse(sessionStorage.getItem([key]));
+          totalQny += x.quantity;
+          totalPrice += x.price * x.quantity;
+        }
+      }
+      document.getElementById('price').innerHTML = '$' + totalPrice.toFixed(2);
+      document.getElementById('cartnum').innerHTML = totalQny;
+    }
+  }]);
+
+  return shop;
+}();
+
+exports.default = shop;
+
+},{}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _bestbuyAPI = require('./bestbuyAPI');
+
+var _bestbuyAPI2 = _interopRequireDefault(_bestbuyAPI);
+
+var _shop = require('./shop');
+
+var _cart = require('./cart');
+
+var _cart2 = _interopRequireDefault(_cart);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var App = function () {
-	function App() {
-		_classCallCheck(this, App);
+  function App() {
+    _classCallCheck(this, App);
 
-		this.cat_clicked = "((categoryPath.id=abcat0502000))";
-		this.initBBCall();
-		this.catListeners();
-		var Cartinit = new _productUtil2.default();
-		Cartinit.cartBuilder();
-		Cartinit.getcartItems();
-	}
+    this.cat_clicked = '((categoryPath.id=abcat0502000))';
+    this.initBBCall();
+    this.catListeners();
+    var Cartinit = new _cart2.default();
+    Cartinit.cartBuilder();
+    Cartinit.getcartItems();
+  }
 
-	_createClass(App, [{
-		key: "initBBCall",
-		value: function initBBCall() {
-			var _this = this;
+  _createClass(App, [{
+    key: 'initBBCall',
+    value: function initBBCall() {
+      var _this = this;
 
-			(0, _bestbuy2.default)({ url: "https://api.bestbuy.com/v1/products" + this.cat_clicked, api: "8ccddf4rtjz5k5btqam84qak" }).then(function (data) {
-				(0, _carousel.carousel)(data);
-				_this.atcListeners();
-			}).catch(function (error) {
-				console.log("warning Christopher Robins... Error");
-				console.log(error);
-			});
-		}
-	}, {
-		key: "atcListeners",
-		value: function atcListeners() {
-			var test = document.getElementsByClassName('atc');
-			for (var i = 0; i < test.length; i++) {
-				test[i].addEventListener("click", function (e) {
-					var sku = e.target.getAttribute("data-sku");
-					var price = e.target.getAttribute("data-price");
-					new _productUtil2.default().addToCart(sku, price);
-				});
-			}
-		}
-	}, {
-		key: "catListeners",
-		value: function catListeners() {
-			var _this2 = this;
+      (0, _bestbuyAPI2.default)({
+        url: 'https://api.bestbuy.com/v1/products' + this.cat_clicked,
+        api: '8ccddf4rtjz5k5btqam84qak'
+      }).then(function (data) {
+        (0, _shop.carousel)(data);
+        _this.atcListeners();
+      }).catch(function (error) {
+        console.log('warning Christopher Robins... Error');
+        console.log(error);
+      });
+    }
+  }, {
+    key: 'atcListeners',
+    value: function atcListeners() {
+      var test = document.getElementsByClassName('atc');
+      for (var i = 0; i < test.length; i++) {
+        test[i].addEventListener('click', function (e) {
+          var sku = e.target.getAttribute('data-sku');
+          var price = e.target.getAttribute('data-price');
+          new _cart2.default().addToCart(sku, price);
+        });
+      }
+    }
+  }, {
+    key: 'catListeners',
+    value: function catListeners() {
+      var _this2 = this;
 
-			var test_two = document.getElementsByClassName('categories');
-			for (var i = 0; i < test_two.length; i++) {
-				test_two[i].addEventListener('click', function (e) {
-					_this2.cat_clicked = e.target.value;
-					_this2.initBBCall();
-				});
-			}
-		}
-	}]);
+      var test_two = document.getElementsByClassName('categories');
+      for (var i = 0; i < test_two.length; i++) {
+        test_two[i].addEventListener('click', function (e) {
+          _this2.cat_clicked = e.target.value;
+          _this2.initBBCall();
+        });
+      }
+    }
+  }]);
 
-	return App;
+  return App;
 }();
 
 exports.default = App;
-;
+
 
 var x = new App();
 
-},{"./bestbuy":1,"./carousel":2,"./productUtil":4}],4:[function(require,module,exports){
-"use strict";
+},{"./bestbuyAPI":1,"./cart":2,"./shop":4}],4:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
+var carousel = exports.carousel = function carousel(data) {
+  document.getElementById('here').innerHTML = '';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var productUtil = function () {
-	function productUtil() {
-		_classCallCheck(this, productUtil);
-	}
-
-	_createClass(productUtil, [{
-		key: "addToCart",
-		value: function addToCart(sku, price) {
-			var product = { price: price, quantity: 1 };
-			if (sessionStorage.getItem(sku) == undefined) {
-				sessionStorage.setItem(sku, JSON.stringify(product));
-			} else {
-				var oldValue = JSON.parse(sessionStorage.getItem(sku, product));
-				var newValue = oldValue.quantity + 1;
-				product.quantity = newValue;
-				sessionStorage.setItem(sku, JSON.stringify(product));
-			}
-			this.cartBuilder(sku, product);
-		}
-	}, {
-		key: "cartBuilder",
-		value: function cartBuilder(sku, product) {
-			document.getElementById('listItems').innerHTML = "";
-			if (sessionStorage) {
-
-				for (var key in sessionStorage) {
-					if (sessionStorage.hasOwnProperty(key)) {
-						var cartItem = document.createElement("div");
-						cartItem.setAttribute("id", "itemRows");
-						product = JSON.parse(sessionStorage[key]);
-						var totalPrice = product.price * product.quantity;
-
-						cartItem.innerHTML = '<div class="padding-bottom-small">' + '<div class="small">' + 'SKU:' + '</div>' + '<div>' + key + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'QUANTITY:' + '</div>' + '<input class="cart_input_size" id="' + key + '" type="number" value="' + product.quantity + '">' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'UNIT PRICE:' + '</div>' + '<div>' + '$' + product.price + '</div>' + '</div>' + '<div class="padding-bottom-small">' + '<div class="small">' + 'TOTAL:' + '</div>' + '<div>' + '$' + totalPrice.toFixed(2) + '</div>' + '</div>' + '<div class="flex">' + '<button class="update" type="button" data-sku="' + key + '">' + 'UPDATE' + '</button>' + '<button class="remove" type="button" data-sku="' + key + '">' + 'REMOVE' + '</button>' + '</div>';
-						document.getElementById('listItems').appendChild(cartItem);
-					}
-				}
-				this.updateButton();
-				this.removeButton();
-				this.getcartItems();
-			}
-		}
-	}, {
-		key: "updateButton",
-		value: function updateButton() {
-			var _this = this;
-
-			var update = document.getElementsByClassName('update');
-			for (var i = 0; i < update.length; i++) {
-				update[i].addEventListener('click', function (e) {
-					var goGrabInput = e.target;
-					_this.getCartInput(goGrabInput);
-				});
-			}
-		}
-	}, {
-		key: "getCartInput",
-		value: function getCartInput(goGrabInput) {
-			var thisSku = goGrabInput.getAttribute("data-sku");
-			var oldQuantity = JSON.parse(sessionStorage.getItem(thisSku));
-			var update_value = document.getElementById(thisSku);
-			if (update_value.value !== oldQuantity.quantity) {
-				oldQuantity.quantity = parseInt(update_value.value);
-				sessionStorage.setItem(thisSku, JSON.stringify(oldQuantity));
-			}
-			this.cartBuilder();
-		}
-	}, {
-		key: "removeButton",
-		value: function removeButton() {
-			var _this2 = this;
-
-			var remove = document.getElementsByClassName('remove');
-
-			var _loop = function _loop() {
-				var thisSku = remove[i].getAttribute("data-sku");
-				remove[i].addEventListener('click', function () {
-					sessionStorage.removeItem(thisSku);
-					_this2.cartBuilder();
-				});
-			};
-
-			for (var i = 0; i < remove.length; i++) {
-				_loop();
-			}
-		}
-	}, {
-		key: "getcartItems",
-		value: function getcartItems() {
-			var totalPrice = 0;
-			var totalQny = 0;
-			for (var key in sessionStorage) {
-				if (sessionStorage.hasOwnProperty(key)) {
-					var x = JSON.parse(sessionStorage.getItem([key]));
-					totalQny += x.quantity;
-					totalPrice += x.price * x.quantity;
-				}
-			}
-			document.getElementById('price').innerHTML = '$' + totalPrice.toFixed(2);
-			document.getElementById('cartnum').innerHTML = totalQny;
-		}
-	}]);
-
-	return productUtil;
-}();
-
-exports.default = productUtil;
-;
+  for (var i = 0; i < data.products.length; i++) {
+    if (data.products[i].largeImage.length) {
+      var image = data.products[i].largeImage;
+      var price = data.products[i].regularPrice;
+      var description = data.products[i].name;
+      var sku = data.products[i].sku;
+      var div = document.createElement('div');
+      div.classList.add('text-align', 'item_size', 'padding-bottom');
+      div.innerHTML = '<img src=' + image + '>' + '<div>' + '$' + price + '</div>' + '<div>' + 'SKU: ' + sku + '</div>' + '<button class="atc" data-sku="' + sku + '" data-price="' + price + '">' + 'ADD TO CART' + '</div>';
+      document.getElementById('here').appendChild(div);
+    } else {
+      break;
+    }
+  }
+};
 
 },{}]},{},[3]);

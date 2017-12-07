@@ -1,43 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ES6 Shopping Cart</title>
     <link rel="stylesheet" type="text/css" href="./build/css/build.css">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    </head>
-    <body class="flex ">
-        <section class="shop flex direction-column align-items-center text-align">
-                <h1 class="padding-bottom black">SHOP FROM BEST BUY</h1>
-                <div class="buttons padding-bottom flex direction-column">
-                    <button class="categories" value="(condition=new&(categoryPath.id=abcat0502000))">LAPTOPS</button>
-                    <button class="categories" value="(condition=new&(categoryPath.id=pcmcat209400050001))">CELL PHONES</button>
-                    <button class="categories" value="(condition=new&(categoryPath.id=abcat0101000))">TVs</button>
-                    <button class="categories" value="(condition=new&(categoryPath.id=abcat0204000))">HEADPHONES</button>
-                </div>				
-                <div>
-                    <div id="here" class="flex direction-column"></div>
-                </div>
-                
-                </div>
-        </section>
-        
-    	<section class="your_cart padding flex direction-column align-items-center text-align">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+</head>
 
-            <h1><i class="fa fa-shopping-cart" aria-hidden="true"></i></h1>
+<body class="flex ">
+    <section class="shop flex direction-column align-items-center text-align">
+        <h1 class="padding-bottom black">SHOP FROM BEST BUY</h1>
+        <div class="padding-bottom flex">
+            <button class="categories" value="(condition=new&(categoryPath.id=abcat0502000))">LAPTOPS</button>
+            <button class="categories" value="(condition=new&(categoryPath.id=pcmcat209400050001))">CELL PHONES</button>
+            <button class="categories" value="(condition=new&(categoryPath.id=abcat0101000))">TVs</button>
+            <button class="categories" value="(condition=new&(categoryPath.id=abcat0204000))">HEADPHONES</button>
+        </div>
+        <div>
+            <div id="here" class="flex flex-wrap"></div>
+        </div>
 
-            <div>
-                <div id="cartnum"></div>
-                <div id="price"></div>
+        </div>
+    </section>
+
+    <section class="your_cart padding flex direction-column align-items-center text-align">
+
+        <h1>
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        </h1>
+
+        <div>
+            <div id="cartnum"></div>
+            <div id="price"></div>
+        </div>
+        <div class="padding flex justify-start direction-column text-align">
+            <div class="flex padding">
+                <div class="cart_title_spacing">SKU</div>
+                <div class="cart_title_spacing">QUANTITY</div>
+                <div class="cart_title_spacing">UNIT PRICE</div>
+                <div class="cart_title_spacing">TOTAL</div>
             </div>
+            <div id="listItems"></div>
+        </div>
 
-            <div id="listItems" class="flex direction-column"></div>
+    </section>
 
-        </section>
+    <script src="./build/js/bundle.js"></script>
 
-        <script src="./build/js/bundle.js"></script>
+</body>
 
-    </body>
 </html>
