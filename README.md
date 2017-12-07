@@ -10,14 +10,18 @@ To display my skills with front end technologies, in particular:
 
 ### Instructions
 
-Download zip and run
+Install dependencies by running
 
-````npm init.
+```
+npm init.
+```
+
 Then run
 
-``` gulp
+```
+gulp
+```
 
 ### Questions or suggestions?
 
 If you have any questions or suggestions please open an issue.
-````
